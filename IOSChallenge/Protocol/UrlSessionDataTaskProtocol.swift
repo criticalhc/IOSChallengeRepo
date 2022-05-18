@@ -7,6 +7,7 @@
 
 import Foundation
 
+// Allows mocking of the DataTask
 protocol URLSessionDataTaskProtocol {
     func resume()
 }

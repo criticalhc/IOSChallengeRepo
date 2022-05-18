@@ -12,6 +12,12 @@ import Swift
 let enableCaching = true
 
 
+
+/// Provides decoded data from a given GET API
+/// - Parameters:
+///   - url: url to hit
+///   - session: URL session object
+/// - Returns: Generic return  type
 func getData<T : Codable>(_ url : URL, session : URLSessionProtocol = URLSession.shared) async -> T? {
     return await withCheckedContinuation { cont in
         let session = session.dataTask(with: url) { data, response, error in
@@ -23,7 +29,7 @@ func getData<T : Codable>(_ url : URL, session : URLSessionProtocol = URLSession
                 print(error)
                 if(enableCaching) {
                     print("loading data from cache")
-                    cachedData = loadCachedData(error)
+                    cachedData = loadCachedData()
                 }
             }
             if let rawData = data {
@@ -39,11 +45,15 @@ func getData<T : Codable>(_ url : URL, session : URLSessionProtocol = URLSession
 }
 
 
+/// Get the URL of the local storage for cached planets
+/// - Returns: URL
 func getPlanetsUrl() -> URL {
     return getDocumentsDirectory().appendingPathComponent("planets.json")
 }
 
-func loadCachedData(_ error: Error) -> Data? {
+/// Loads planet  data from the local cache
+/// - Returns: Data from local storage
+func loadCachedData() -> Data? {
     do {
         if (enableCaching) {
             let cachedData = try Data(contentsOf: getPlanetsUrl())
@@ -60,6 +70,12 @@ func loadCachedData(_ error: Error) -> Data? {
 }
 
 
+/// Helper function designed to handle data recievied from the backend API
+/// - Parameters:
+///   - rawData: raw data from an API response
+///   - cachedData: if cached data is provided and raw data is null. the cached data will be used
+///   - cont: Checked continuation used to allow async execution
+///   - typeOfData: Type of data to be returned
 func handleDataFromApi<T : Codable>(_ rawData: Data, _ cachedData: Data?, cont : CheckedContinuation<T, Never>, typeOfData : T.Type) {
     var decodedObject : T? = nil
     do {

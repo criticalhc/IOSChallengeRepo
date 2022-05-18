@@ -28,6 +28,7 @@ struct ContentView: View {
     
 }
 
+/// provides a preview
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
         ContentView()

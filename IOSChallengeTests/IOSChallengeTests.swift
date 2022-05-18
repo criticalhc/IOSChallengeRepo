@@ -10,6 +10,7 @@ import XCTest
 
 class IOSChallengeTests: XCTestCase {
     
+    //put json here to test decoding
     let apiJson = ""
 
     override func setUpWithError() throws {}

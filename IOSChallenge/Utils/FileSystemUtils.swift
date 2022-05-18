@@ -7,6 +7,8 @@
 
 import Foundation
 
+/// Get URL of local storage directory
+/// - Returns: URL
 func getDocumentsDirectory() -> URL {
     // find all possible documents directories for this user
     let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
